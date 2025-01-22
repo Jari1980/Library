@@ -3,14 +3,8 @@ package org.workshop.library;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.workshop.library.entity.AppUser;
-import org.workshop.library.entity.Book;
-import org.workshop.library.entity.BookLoan;
-import org.workshop.library.entity.Details;
-import org.workshop.library.repository.AppUserRepository;
-import org.workshop.library.repository.BookLoanRepository;
-import org.workshop.library.repository.BookRepository;
-import org.workshop.library.repository.DetailsRepository;
+import org.workshop.library.entity.*;
+import org.workshop.library.repository.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,14 +17,17 @@ public class playGround implements CommandLineRunner {
     DetailsRepository detailsRepository;
     BookRepository bookRepository;
     BookLoanRepository bookLoanRepository;
+    AuthorRepository authorRepository;
 
     @Autowired
     public playGround(AppUserRepository appUserRepository, DetailsRepository detailsRepository,
-                      BookRepository bookRepository, BookLoanRepository bookLoanRepository) {
+                      BookRepository bookRepository, BookLoanRepository bookLoanRepository,
+                      AuthorRepository authorRepository) {
         this.appUserRepository = appUserRepository;
         this.detailsRepository = detailsRepository;
         this.bookRepository = bookRepository;
         this.bookLoanRepository = bookLoanRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -65,5 +62,7 @@ public class playGround implements CommandLineRunner {
         }
         System.out.println(bookLoanRepository.findById(1).get().getReturned());
 
+        authorRepository.save(new Author("John", "Doe"));
+        authorRepository.deleteAuthorById(1);
     }
 }

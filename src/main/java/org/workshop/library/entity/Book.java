@@ -1,18 +1,20 @@
 package org.workshop.library.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String isbn;
     private String title;
     private int maxLoanDays;
+    @ManyToMany(mappedBy = "writtenBooks")
+    private Set<Author> authors = new HashSet<>();
 
     protected Book() {
     }
