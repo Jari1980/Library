@@ -13,7 +13,7 @@ public class Author {
     private int id;
     private String firstName;
     private String lastName;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "author_book",
             joinColumns = @JoinColumn(name = "author_id"),
@@ -28,11 +28,22 @@ public class Author {
         this.firstName = firstName;
         this.lastName = lastName;
         this.writtenBooks = writtenBooks;
+
     }
 
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public void addWrittenBook(Book book) {
+        writtenBooks.add(book);
+        book.getAuthors().add(this);
+    }
+
+    public void removeWrittenBook(Book book) {
+        writtenBooks.remove(book);
+        book.getAuthors().remove(this);
     }
 
     public void setFirstName(String firstName) {

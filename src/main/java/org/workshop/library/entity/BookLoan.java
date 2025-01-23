@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Entity
 public class BookLoan {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "loan_id")
     private int id;
     private LocalDate loanDate;

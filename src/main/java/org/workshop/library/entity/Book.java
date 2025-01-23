@@ -13,7 +13,7 @@ public class Book {
     private String isbn;
     private String title;
     private int maxLoanDays;
-    @ManyToMany(mappedBy = "writtenBooks")
+    @ManyToMany(mappedBy = "writtenBooks", fetch = FetchType.EAGER)
     private Set<Author> authors = new HashSet<>();
 
     protected Book() {
@@ -23,6 +23,20 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
+    }
+
+    public void removeAuthor(Author author) {
+        authors.remove(author);
+        author.removeWrittenBook(this);
+    }
+
+    public void addAuthor(Author author) {
+        authors.add(author);
+        author.addWrittenBook(this);
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
     }
 
     public void setIsbn(String isbn) {
