@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 public class Details {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String email;
     private String name;

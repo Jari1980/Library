@@ -3,11 +3,13 @@ package org.workshop.library.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String username;
     private String password;
@@ -15,6 +17,9 @@ public class AppUser {
     @OneToOne
     @JoinColumn
     private Details details;
+    @OneToMany(mappedBy = "borrower")
+    //@JoinColumn
+    private List<BookLoan> bookLoanList = new ArrayList<BookLoan>();
 
     protected AppUser() {
     }
@@ -24,6 +29,11 @@ public class AppUser {
         this.password = password;
         this.regDate = regDate;
         this.details = details;
+    }
+
+    public void loanBook(BookLoan loan) {
+        bookLoanList.add(loan);
+        loan.setBorrower(this);
     }
 
     public void setId(int id) {

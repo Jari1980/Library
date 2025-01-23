@@ -1,5 +1,6 @@
 package org.workshop.library;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ public class playGround implements CommandLineRunner {
         this.authorRepository = authorRepository;
     }
 
+    @Transactional //Needed if using LAZY fetching, not needed if EAGER
     @Override
     public void run(String... args) throws Exception {
         detailsRepository.save(new Details("Jon", "BarBar", LocalDate.of(2025,01,16)));
@@ -64,5 +66,29 @@ public class playGround implements CommandLineRunner {
 
         authorRepository.save(new Author("John", "Doe"));
         authorRepository.deleteAuthorById(1);
+
+        bookRepository.save(new Book("2222", "Broccoli2", 12));
+        bookRepository.save(new Book("3333", "Broccoli3", 12));
+        bookRepository.save(new Book("4444", "Broccoli4", 12));
+
+        authorRepository.save(new Author("John2", "Doe2"));
+        authorRepository.save(new Author("John3", "Doe3"));
+        authorRepository.save(new Author("John4", "Doe4"));
+
+         //Works with EAGER
+        Book book = bookRepository.findById(2).orElseThrow();
+        book.addAuthor(authorRepository.findById(2).orElseThrow());
+
+        Book book2 = bookRepository.findById(3).orElseThrow();
+        book2.addAuthor(authorRepository.findById(3).orElseThrow());
+
+        for(Author author : authorRepository.findAll()) {
+            System.out.println(author.getFirstName());
+        }
+
+
+        //Book book = bookRepository.findById(2).orElseThrow();
+        //book.addAuthor(authorRepository.findById(2).orElseThrow());
+
     }
 }
